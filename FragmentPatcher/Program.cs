@@ -129,18 +129,18 @@ class FragmentPatcher {
 
         FragmentPatch offlineHook = new(0x005a7244 - 0x537600,
                                         [0x2d, 0x20, 0x80, 0x02,
-                                         0x38, 0xB1, 0x1B, 0x0C]
+                                         0x78, 0xB1, 0x1B, 0x0C]
                                        );
 
-        FragmentPatch offlinePatch = new(0x006ec4e0 + 0x100 - 0x537600,
+        FragmentPatch offlinePatch = new(0x006ec5e0 - 0x537600,
                                          getPatchBytes(offlinePatchPath));
 
         FragmentPatch onlineHook = new(0x00230894 - 0xFFF00,
                                        [0x2d, 0x20, 0x80, 0x02,
-                                        0x32, 0x21, 0x18, 0x0C,]
+                                        0x72, 0x21, 0x18, 0x0C,]
                                       );
 
-        FragmentPatch onlinePatch = new(0x006084c8 + 0x100 - 0xFFF00,
+        FragmentPatch onlinePatch = new(0x006085c8 - 0xFFF00,
                                         getPatchBytes(onlinePatchPath));
 
         Dictionary<string, FragmentPatch[]> fileToPatches = new(){
