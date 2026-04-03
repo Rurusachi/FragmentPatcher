@@ -114,8 +114,9 @@ class FragmentPatcher {
     }
 
     static bool ApplyShortcutPatch(string isoPath) {
-        string offlinePatchPath = @"ShortcutPatch\offline.erl";
-        string onlinePatchPath  = @"ShortcutPatch\online.erl";
+        string basePath = AppContext.BaseDirectory;
+        string offlinePatchPath = Path.Combine(basePath, @"ShortcutPatch\offline.erl");
+        string onlinePatchPath  = Path.Combine(basePath, @"ShortcutPatch\online.erl");
 
         if (!File.Exists(offlinePatchPath)) {
             Console.WriteLine($"Couldn't find {offlinePatchPath}");
