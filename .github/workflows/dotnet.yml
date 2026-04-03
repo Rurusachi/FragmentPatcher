@@ -1,0 +1,71 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config:
+          - runs-on: windows-latest
+            os: win
+            architecture: x64
+          - runs-on: windows-latest
+            os: win
+            architecture: x86
+          - runs-on: ubuntu-latest
+            os: linux
+            architecture: x64
+          - runs-on: macos-latest
+            os: osx
+            architecture: x64
+    permissions: 
+      contents: write
+    runs-on: ${{ matrix.config.runs-on }}
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Publish
+      run: dotnet publish FragmentPatcher/FragmentPatcher.csproj -c Release -a ${{ matrix.config.architecture }} -o publish
+
+    - name: Create zip (win)
+      if: matrix.config.os == 'win'
+      run: |
+        7z a -tzip ./FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip LICENSE README.md
+        cd publish
+        7z a -tzip ../FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip ./
+        cd ../patches
+        7z a -tzip ../FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip ./
+        cd ..
+
+    - name: Create zip (linux, osx)
+      if: matrix.config.os != 'win'
+      run: |
+        zip -r ./FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip LICENSE README.md 
+        cd publish
+        zip -r ../FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip ./
+        cd ../patches
+        zip -r ../FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip ./
+        cd ..
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: FragmentPatcher-${{github.event.release.tag_name}}-${{matrix.config.os}}-${{matrix.config.architecture}}.zip
