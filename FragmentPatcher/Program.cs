@@ -31,7 +31,7 @@ class FragmentPatcher {
         }
 
         if (!File.Exists(inputPath)) {
-            Console.WriteLine($"{inputPath} doesn't exist");
+            Console.WriteLine($"Couldn't find {inputPath}");
             return;
         }
 
@@ -46,7 +46,7 @@ class FragmentPatcher {
         }
 
         if (!File.Exists(outputPath)) {
-            Console.WriteLine($"{outputPath} doesn't exist");
+            Console.WriteLine($"Couldn't create {outputPath}");
             return;
         }
 
@@ -118,11 +118,11 @@ class FragmentPatcher {
         string onlinePatchPath  = @"ShortcutPatch\online.erl";
 
         if (!File.Exists(offlinePatchPath)) {
-            Console.WriteLine($"{offlinePatchPath} doesn't exist");
+            Console.WriteLine($"Couldn't find {offlinePatchPath}");
             return false;
         }
         if (!File.Exists(onlinePatchPath)) {
-            Console.WriteLine($"{onlinePatchPath} doesn't exist");
+            Console.WriteLine($"Couldn't find {onlinePatchPath}");
             return false;
         }
 
