@@ -11,6 +11,7 @@
 	<PublishTrimmed>true</PublishTrimmed>
 	<PublishAot>true</PublishAot>
 	<InvariantGlobalization>true</InvariantGlobalization>
+	<CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
 	  <DebugSymbols>false</DebugSymbols>
